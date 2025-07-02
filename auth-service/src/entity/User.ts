@@ -19,4 +19,8 @@ export class User {
 
   @CreateDateColumn()
   createdAt!: Date;
+
+   setTOTP(secret: string) {
+    this.totpSecret = secret;
+  }
 }

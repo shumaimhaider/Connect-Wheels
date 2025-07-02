@@ -1,5 +1,6 @@
 import express from 'express';
-import { AppDataSource } from './data-source';
+import { AppDataSource } from './data_source';
+import authRoutes from './routes/auth_routes';
 
 
 const app = express();
@@ -7,6 +8,9 @@ const app = express();
 app.get('/health', (req, res) => {
   res.send('Auth Microservice is running');
 });
+
+app.use(express.json());
+app.use('/auth', authRoutes);
 
 AppDataSource.initialize()
     .then(() => {

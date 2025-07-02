@@ -2,7 +2,6 @@
 
 DATASOURCE=./src/data-source.ts
 
-# Fallback target if nothing is passed
 all:
 	@echo ""
 	@echo "Usage:"
@@ -20,5 +19,5 @@ migrate-up:
 	npx typeorm-ts-node-commonjs -d $(DATASOURCE) migration:run
 
 # Revert last migration
-migrate-down:
+migrate-rollback:
 	npx typeorm-ts-node-commonjs -d $(DATASOURCE) migration:revert
