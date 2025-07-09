@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import speakeasy from "speakeasy";
 import QRCode from "qrcode";
 
-import { AppDataSource } from "../data_source";
-import { User } from "../entity/User";
+import { AppDataSource } from "../data-source";
+import { User } from "../entity/user";
 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
@@ -67,7 +67,7 @@ const registerUser = async (username: string, password: string) => {
 
 
 // Setup TOTP for a user (Generate secret & QR Code)
- const setupTOTP = async (userID: string) => {
+ const setupTOTP = async (userID: number) => {
     try {
         const userModel = AppDataSource.getRepository(User);
         const user = await userModel.findOne({ where: { id: userID } });
@@ -94,7 +94,7 @@ const registerUser = async (username: string, password: string) => {
 };
 
 // Verify OTP for a user
- const verifyOTPForTOTP = async (userID: string, token: string) => {
+ const verifyOTPForTOTP = async (userID: number, token: string) => {
     try {
         const userModel = AppDataSource.getRepository(User);
         const user = await userModel.findOne({ where: { id: userID } });

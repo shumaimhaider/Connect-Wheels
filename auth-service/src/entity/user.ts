@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 
 @Entity('app_user')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+  @PrimaryGeneratedColumn('increment')
+  id!: number;
 
   @Column({ unique: true })
   username!: string;
@@ -20,7 +20,7 @@ export class User {
   @CreateDateColumn()
   createdAt!: Date;
 
-   setTOTP(secret: string) {
+  setTOTP(secret: string) {
     this.totpSecret = secret;
   }
 }
