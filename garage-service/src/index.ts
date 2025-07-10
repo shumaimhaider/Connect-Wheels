@@ -1,7 +1,6 @@
 import express from 'express';
 import { AppDataSource } from './data-source';
-import authRoutes from './routes/auth_routes';
-import { startGrpcServer } from './grpc/grpc-server';
+import gargeRoutes from './routes/garage-routes';
 
 
 const app = express();
@@ -11,17 +10,15 @@ app.get('/health', (req, res) => {
 });
 
 app.use(express.json());
-app.use('/auth', authRoutes);
+app.use('/garage', gargeRoutes);
 
 AppDataSource.initialize()
     .then(() => {
     console.log("Data Source has been initialized!");
-    app.listen(3000, () => {
-      console.log('Auth Microservice is running on port 3000');
+    app.listen(3001, () => {
+      console.log('Garage Microservice is running on port 3001');
     });
-    
- // Start gRPC server
-    startGrpcServer();
+
   })
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);
