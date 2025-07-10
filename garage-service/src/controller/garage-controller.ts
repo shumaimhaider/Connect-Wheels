@@ -36,9 +36,25 @@ const createGarage = async (req: Request, res: Response) => {
   }
 }
 
+// for kafka consumer
+const deleteGarageByOwnerID = async (ownerID: number) => {
+  try {
+       if (isNaN(ownerID)) {
+          console.error('missing or invalid userId');
+          return;
+        }
+    const result = await garageService.deleteGarageByOwnerID(ownerID);
+    return result;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 
 const controller = {
   createGarage,
+  deleteGarageByOwnerID
 }
 
 export default controller

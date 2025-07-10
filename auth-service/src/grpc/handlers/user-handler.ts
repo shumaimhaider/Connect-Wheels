@@ -1,10 +1,10 @@
-import { findUserById } from '../../service/user-service';
+import userService from '../../service/user-service';
 import * as grpc from '@grpc/grpc-js';
 
 export const checkUser = async (call: any, callback: any) => {
     try {
         const userId = Number(call.request.userId);
-        const exists = await findUserById(userId);        
+        const exists = await userService.findUserById(userId);        
         callback(null, { exists: exists });
     } catch (error) {
         console.error(error);

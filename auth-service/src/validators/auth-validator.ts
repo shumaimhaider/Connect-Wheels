@@ -10,3 +10,4 @@ export const registerValidator = [
     body('username').isString().notEmpty().withMessage('Uername is required'),
     body('password').isString().notEmpty().withMessage('Password is required'),
 ];
+

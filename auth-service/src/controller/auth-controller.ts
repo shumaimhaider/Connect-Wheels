@@ -38,9 +38,9 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 
-const controller = {
+const Authcontroller = {
     registerUser,
     loginUser
 }
 
-export default controller
+export default Authcontroller
