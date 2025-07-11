@@ -1,6 +1,8 @@
 import express from 'express';
 import { AppDataSource } from './data-source';
 import gargeRoutes from './routes/garage-routes';
+import startAllConsumers  from './messaging/kafka/consumers';
+
 
 
 const app = express();
@@ -19,6 +21,7 @@ AppDataSource.initialize()
       console.log('Garage Microservice is running on port 3001');
     });
 
+   startAllConsumers()
   })
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);

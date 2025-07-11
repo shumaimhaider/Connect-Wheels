@@ -18,8 +18,27 @@ export const createGarage = async (garageData: GarageDTO) => {
 };
 
 
+const deleteGarageByOwnerID = async (ownerID: number): Promise<boolean> => {
+    const garageRepo = AppDataSource.getRepository(Garage);
+    try {
+        const deleteResult = await garageRepo.delete({
+            ownerId: ownerID
+        });
+
+        if (deleteResult.affected === 0) {
+            console.log(`No garages found for userId ${ownerID}—nothing to delete.`);
+        }
+
+        return true;
+    } catch (error) {
+        console.error('Error deleting garage:', error);
+        throw error
+    }
+};
+
 const garageService = {
-    createGarage
+    createGarage,
+    deleteGarageByOwnerID
 };
 
 

@@ -1,6 +1,6 @@
 import express from 'express';
 import { AppDataSource } from './data-source';
-import authRoutes from './routes/auth_routes';
+import authRoutes from './routes/auth-routes';
 import { startGrpcServer } from './grpc/grpc-server';
 
 
