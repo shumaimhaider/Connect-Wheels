@@ -2,6 +2,8 @@ import express from 'express';
 import { AppDataSource } from './data-source';
 import gargeRoutes from './routes/garage-routes';
 import startAllConsumers  from './messaging/kafka/consumers';
+import rateLimit from 'express-rate-limit';
+
 
 
 
@@ -11,8 +13,21 @@ app.get('/health', (req, res) => {
   res.send('Auth Microservice is running');
 });
 
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
+  message: 'Too many requests, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 app.use(express.json());
 app.use('/garage', gargeRoutes);
+app.use(limiter);
+
+
+
+
 
 AppDataSource.initialize()
     .then(() => {

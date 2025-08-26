@@ -5,7 +5,7 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entity/user";
 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-jwt-secret';
+const JWT_SECRET = 'your-jwt-secret';
 
 const registerUser = async (username: string, password: string) => {
     try {
