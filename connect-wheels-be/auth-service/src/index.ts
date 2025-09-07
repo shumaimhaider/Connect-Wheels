@@ -23,7 +23,7 @@ AppDataSource.initialize()
     });
 
     // Start gRPC server
-    startGrpcServer();
+   // startGrpcServer();
   })
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);
