@@ -26,7 +26,7 @@ export const loginUser = (values, resetForm) => async (dispatch) => {
     console.log("Login successful:", res.payload);
     resetForm();
     // 👉 you can also save token to localStorage here if needed
-    // localStorage.setItem("token", res.payload.token);
+    localStorage.setItem("token", res.payload.token);
   } else {
     console.error("Login failed:", res.payload);
   }
