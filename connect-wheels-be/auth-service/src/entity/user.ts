@@ -17,6 +17,12 @@ export class User {
   @Column({ nullable: true })
   totpSecret!: string;
 
+  @Column({ nullable: true })
+  googleId!: string;
+
+  @Column({ nullable: true })
+  email!: string;
+
   @CreateDateColumn()
   createdAt!: Date;
 
