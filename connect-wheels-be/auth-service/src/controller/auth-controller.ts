@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 
 import authService from "../service/auth_service";
+import { CreateUserDTO, toCreateUserDTO } from "../dtos/createUserDto";
+import { LoginUserDTO, toLoginUserDTO } from "../dtos/loginUserDto";
 import {
   handleGoogleCallback as processGoogleCallback,
   getGoogleAuthUrl as generateGoogleAuthUrl,
@@ -13,13 +15,11 @@ const registerUser = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { username, password } = req.body;
 
+  const user: CreateUserDTO = toCreateUserDTO(req.body);
   try {
-    const result = await authService.registerUser(username, password);
-    return res
-      .status(201)
-      .json({ message: result.message, userId: result.userId });
+    const result = await authService.registerUser(user);
+    return res.status(201).json({ message: result.message });
   } catch (error) {
     console.error("register user", error);
     return res
@@ -34,10 +34,11 @@ const loginUser = async (req: Request, res: Response) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const { username, password, otp } = req.body;
+
+  const user: LoginUserDTO = toLoginUserDTO(req.body);
 
   try {
-    const result = await authService.loginUser(username, password, otp);
+    const result = await authService.loginUser(user);
     return res
       .status(200)
       .json({ message: result.message, token: result.token });
@@ -74,9 +75,11 @@ const handleGoogleCallback = async (req: Request, res: Response) => {
       `http://localhost:5173/?token=${jwt}&userId=${result.user.id}&email=${result.user.email}`
     );
   } catch (error) {
-    console.error('Google callback error:', error);
+    console.error("Google callback error:", error);
     res.redirect(
-      `http://localhost:5173/?message=${encodeURIComponent('Google authentication failed')}`
+      `http://localhost:5173/?message=${encodeURIComponent(
+        "Google authentication failed"
+      )}`
     );
   }
 };
@@ -85,7 +88,7 @@ const Authcontroller = {
   registerUser,
   loginUser,
   getGoogleAuthUrl,
-  handleGoogleCallback
+  handleGoogleCallback,
 };
 
 export default Authcontroller;

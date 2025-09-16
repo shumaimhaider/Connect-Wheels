@@ -5,17 +5,18 @@ export class User {
   @PrimaryGeneratedColumn('increment')
   id!: number;
 
-  @Column({ unique: true })
-  username!: string;
+@Column({ nullable: true })
+  firstName!: string; 
 
-  @Column()
-  passwordHash!: string;
+@Column({ nullable: true })
+  lastName!: string;    
 
-  @Column({ default: 'user' })
-  role!: string;
+  @Column({  nullable: true , unique: true })
+  email!: string;   
 
-  @Column({ nullable: true })
-  totpSecret!: string;
+ @Column({ nullable: true })
+  password!: string; 
+
 
   @Column({ nullable: true })
   googleId!: string;
@@ -25,8 +26,4 @@ export class User {
 
   @CreateDateColumn()
   createdAt!: Date;
-
-  setTOTP(secret: string) {
-    this.totpSecret = secret;
-  }
 }

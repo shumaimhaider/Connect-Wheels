@@ -3,18 +3,29 @@ import { AppDataSource } from './data-source';
 import authRoutes from './routes/auth-routes';
 import userRoutes from './routes/user-routes';
 import { startGrpcServer } from './grpc/grpc-server';
+<<<<<<< HEAD
 import dns from 'dns';
 dns.setDefaultResultOrder('ipv4first');
+=======
+import cors from "cors";
+>>>>>>> e99f6b0326e5e238415a5b7c28191f5516ab957e
 
 const app = express();
+
+// ✅ CORS should be first
+app.use(cors({
+  origin: "http://localhost:5173", // 👈 remove the trailing slash!
+  credentials: true,
+}));
+
+app.use(express.json());
 
 app.get('/health', (req, res) => {
   res.send('Auth Microservice is running');
 });
 
-app.use(express.json());
 app.use('/auth', authRoutes);
-app.use('/user', userRoutes)
+app.use('/user', userRoutes);
 
 AppDataSource.initialize()
   .then(() => {
