@@ -1,7 +1,15 @@
-import { Box, Button, Divider, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { Google } from "@mui/icons-material";
-import {LoginForm} from "../forms/login-form/index";
-
+import { LoginForm } from "../forms/login-form/index";
+import { Link } from "react-router-dom";
+import GoogleAuthButton from "../components/google-auth-button";
 export default function LoginPage() {
   return (
     <Box
@@ -55,36 +63,27 @@ export default function LoginPage() {
         </Box>
 
         {/* Social Login */}
-        <Button
-          fullWidth
-          variant="outlined"
-          startIcon={<Google />}
-          sx={{
-            borderRadius: 2,
-            py: 1.5,
-            textTransform: "none",
-            fontWeight: 500,
-          }}
-        >
-          Continue with Google
-        </Button>
+        <GoogleAuthButton
+          buttonText="Login with Google"
+          loadingText="Redirecting to Google..."
+        />
 
         {/* Links */}
         <Box mt={3} textAlign="center">
           <Typography variant="body2" color="text.secondary">
-            <a
-              href="/forgot-password"
+            <Link
+              to="/forgot-password"
               style={{ color: "#1976d2", textDecoration: "none" }}
             >
               Forgot password?
-            </a>{" "}
+            </Link>{" "}
             ·{" "}
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               style={{ color: "#1976d2", textDecoration: "none" }}
             >
               Create account
-            </a>
+            </Link>
           </Typography>
         </Box>
       </Paper>
