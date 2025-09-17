@@ -3,12 +3,9 @@ import { AppDataSource } from './data-source';
 import authRoutes from './routes/auth-routes';
 import userRoutes from './routes/user-routes';
 import { startGrpcServer } from './grpc/grpc-server';
-<<<<<<< HEAD
 import dns from 'dns';
 dns.setDefaultResultOrder('ipv4first');
-=======
 import cors from "cors";
->>>>>>> e99f6b0326e5e238415a5b7c28191f5516ab957e
 
 const app = express();
 

@@ -1,28 +1,35 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from "typeorm";
 
-@Entity('app_user')
+@Entity("app_user")
 export class User {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn("increment")
   id!: number;
 
-@Column({ nullable: true })
-  firstName!: string; 
+  @Column({ nullable: true })
+  firstName!: string;
 
-@Column({ nullable: true })
-  lastName!: string;    
+  @Column({ nullable: true })
+  lastName!: string;
 
-  @Column({  nullable: true , unique: true })
-  email!: string;   
+  @Column({ nullable: true, unique: true })
+  email!: string;
 
- @Column({ nullable: true })
-  password!: string; 
-
+  @Column({ nullable: true })
+  password!: string;
 
   @Column({ nullable: true })
   googleId!: string;
 
   @Column({ nullable: true })
-  email!: string;
+  googleRefreshToken!: string;
+  @Column({ default: 'user' })  // ← ADD THIS FIELD
+  role!: string;                // ← ADD THIS FIELD
+
 
   @CreateDateColumn()
   createdAt!: Date;
