@@ -1,10 +1,6 @@
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react"; // ← ADD THIS IMPORT
-
 import "./App.css";
-
 import {
   createBrowserRouter,
   RouterProvider,
@@ -60,7 +56,8 @@ const router = createBrowserRouter([
     element: <NotFoundPage />,
   },
 ]);
-// App component
+
+// App component - clean and simple
 function App() {
   return (
     <Provider store={store}>

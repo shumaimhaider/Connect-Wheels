@@ -1,25 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axios/axiosInstance";
+import axios from "axios";
 // Check if user has token in localStorage (for initial state)
 const getInitialState = () => {
   const token = localStorage.getItem("token");
   const userStr = localStorage.getItem("user");
-
+  
   let user = null;
   try {
-    // Parse user data with proper error handling
     user = userStr && userStr !== "undefined" ? JSON.parse(userStr) : null;
   } catch (error) {
     console.error("Error parsing user data from localStorage:", error);
-    // Clear corrupted data
     localStorage.removeItem("user");
     user = null;
+  }
+
+  // Only consider authenticated if we have BOTH token and user data
+  const isAuthenticated = !!(token && user);
+  
+  // If we have token but no user (corrupted state), clear it
+  if (token && !user) {
+    localStorage.removeItem("token");
   }
 
   return {
     user: user,
     token: token,
-    isAuthenticated: !!token,
+    isAuthenticated: isAuthenticated,
     loading: false,
     error: null,
   };
@@ -36,6 +43,48 @@ export const loginWithGoogle = createAsyncThunk(
     }
   }
 );
+
+// Add this async thunk for user registration
+export const registerUser = createAsyncThunk(
+  "user/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/register", userData);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+// Add login async thunk
+export const loginUser = createAsyncThunk(
+  "user/login",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/auth/login", credentials);
+      
+      // Handle backend returning 200 with error message
+      if (response.data.message && response.data.message.includes('failed')) {
+        return rejectWithValue(response.data.message);
+      }
+      
+      if (!response.data.token) {
+        return rejectWithValue('Login failed: No authentication token received');
+      }
+      
+      return response.data;
+    } catch (err) {
+      // Handle actual HTTP errors
+      return rejectWithValue(
+        err.response?.data?.message || 
+        err.response?.data?.error || 
+        err.message || 
+        'Login failed'
+      );
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState: getInitialState(),
@@ -46,14 +95,16 @@ const userSlice = createSlice({
     },
     loginSuccess: (state, action) => {
       state.loading = false;
-      state.user = action.payload.user;
-      state.token = action.payload.token;
+      
+      const { token, ...userData } = action.payload;
+      state.user = userData;
+      state.token = token;
       state.isAuthenticated = true;
       state.error = null;
 
       // Save to localStorage
-      localStorage.setItem("token", action.payload.token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user)); // ← SAVE USER DATA
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
     },
     loginFailure: (state, action) => {
       state.loading = false;
@@ -80,6 +131,47 @@ const userSlice = createSlice({
         window.location.href = action.payload.authUrl;
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        // Double-check that we have a token (in case backend returns 200 with error)
+        if (!action.payload.token || action.payload.message === 'Login failed') {
+          state.loading = false;
+          state.error = 'Login failed';
+          state.isAuthenticated = false;
+          return;
+        }
+        
+        state.loading = false;
+        
+        const { token, ...userData } = action.payload;
+        state.user = userData;
+        state.token = token;
+        state.isAuthenticated = true;
+        state.error = null;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("user", JSON.stringify(userData));
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.isAuthenticated = false;
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },
