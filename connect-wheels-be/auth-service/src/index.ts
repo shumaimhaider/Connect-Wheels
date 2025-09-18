@@ -3,8 +3,6 @@ import { AppDataSource } from './data-source';
 import authRoutes from './routes/auth-routes';
 import userRoutes from './routes/user-routes';
 import { startGrpcServer } from './grpc/grpc-server';
-import dns from 'dns';
-dns.setDefaultResultOrder('ipv4first');
 import cors from "cors";
 
 const app = express();
@@ -27,18 +25,12 @@ app.use('/user', userRoutes);
 AppDataSource.initialize()
   .then(() => {
     console.log("Data Source has been initialized!");
-    
-    const server = app.listen(3000, () => {
+    app.listen(3000, () => {
       console.log('Auth Microservice is running on port 3000');
     });
 
-    // Move server error handler here
-    server.on('error', (err) => {
-      console.error("Server error:", err);
-    });
-
     // Start gRPC server
-    // startGrpcServer();
+    startGrpcServer();
   })
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);

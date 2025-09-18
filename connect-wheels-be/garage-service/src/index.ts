@@ -36,7 +36,7 @@ AppDataSource.initialize()
       console.log('Garage Microservice is running on port 3001');
     });
 
-  // startAllConsumers()
+   startAllConsumers()
   })
   .catch((err) => {
     console.error("Error during Data Source initialization:", err);
