@@ -1,9 +1,7 @@
-import { Field, useFormikContext } from "formik";
+import { Field } from "formik";
 import { TextField, Box, Button, CircularProgress } from "@mui/material";
 
-export const LoginFormFields = () => {
-  const { isSubmitting } = useFormikContext();
-
+export const LoginFormFields = ({ loading }) => {
   return (
     <>
       <Box mb={2}>
@@ -41,7 +39,7 @@ export const LoginFormFields = () => {
         fullWidth
         variant="contained"
         size="large"
-        disabled={isSubmitting}
+        disabled={loading}
         sx={{
           mt: 2,
           borderRadius: 2,
@@ -50,7 +48,7 @@ export const LoginFormFields = () => {
           textTransform: "none",
         }}
       >
-        {isSubmitting ? (
+        {loading ? (
           <CircularProgress size={24} color="inherit" />
         ) : (
           "Sign in"

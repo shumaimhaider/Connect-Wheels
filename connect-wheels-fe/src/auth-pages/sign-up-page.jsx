@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
-import { Google } from "@mui/icons-material";
 import { SignupForm } from "../forms/sign-up-form";
-
+import { Link } from "react-router-dom";
+import GoogleAuthButton from "../components/google-auth-button";
 export default function SignupPage() {
   return (
     <Box
@@ -17,14 +17,14 @@ export default function SignupPage() {
       <Paper
         elevation={6}
         sx={{
-          p: { xs: 3, sm: 5 }, 
+          p: { xs: 3, sm: 5 },
           width: "100%",
-          maxWidth: 600, 
+          maxWidth: 600,
           borderRadius: 3,
           minHeight: { xs: "auto", md: "80vh" },
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center", 
+          justifyContent: "center",
         }}
       >
         {/* Title */}
@@ -58,30 +58,20 @@ export default function SignupPage() {
         </Box>
 
         {/* Google Sign Up */}
-        <Button
-          fullWidth
-          variant="outlined"
-          startIcon={<Google />}
-          sx={{
-            borderRadius: 2,
-            py: 1.5,
-            textTransform: "none",
-            fontWeight: 500,
-          }}
-        >
-          Sign up with Google
-        </Button>
-
+        <GoogleAuthButton
+          buttonText="Sign up with Google"
+          loadingText="Redirecting to Google..."
+        />
         {/* Links */}
         <Box mt={3} textAlign="center">
           <Typography variant="body2" color="text.secondary">
             Already have an account?{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               style={{ color: "#1976d2", textDecoration: "none" }}
             >
               Sign in
-            </a>
+            </Link>
           </Typography>
         </Box>
       </Paper>
