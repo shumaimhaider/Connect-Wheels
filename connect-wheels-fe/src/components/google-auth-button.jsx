@@ -1,24 +1,33 @@
 import { Button, CircularProgress } from "@mui/material";
 import { Google } from "@mui/icons-material";
-import { loginWithGoogle } from "../redux/slices/userSlice";
+import { useLoginWithGoogleQuery } from "../redux/slices/apiSlice";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+
 export default function GoogleAuthButton({
   variant = "outlined",
   buttonText = "Continue with Google",
   loadingText = "Redirecting to Google...",
 }) {
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const dispatch = useDispatch();
-  const handleGoogleLogin = () => {
+  const { refetch: triggerGoogleLogin } = useLoginWithGoogleQuery();
+
+  const handleGoogleLogin = async () => {
     try {
       setIsGoogleLoading(true);
-      dispatch(loginWithGoogle());
+      const result = await triggerGoogleLogin();
+      
+      if (result.data?.authUrl) {
+        window.location.href = result.data.authUrl;
+      } else {
+        throw new Error("No auth URL received");
+      }
     } catch (error) {
-      toast.error(error);
+      toast.error("Google login failed. Please try again.");
+      setIsGoogleLoading(false);
     }
   };
+
   return (
     <Button
       fullWidth

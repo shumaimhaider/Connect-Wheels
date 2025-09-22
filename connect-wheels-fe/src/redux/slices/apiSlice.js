@@ -1,46 +1,68 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "../../axios/axiosInstance";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-// Generic thunk to call any GET endpoint
-export const callApi = createAsyncThunk(
-  "api/callApi",
-  async ({ url, method = "get", data = null }, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance({
-        url,
-        method,
-        data,
-      });
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response?.data || err.message);
-    }
-  }
-);
-
-const apiSlice = createSlice({
-  name: "api",
-  initialState: {
-    response: null,
-    loading: false,
-    error: null,
-  },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-      .addCase(callApi.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(callApi.fulfilled, (state, action) => {
-        state.loading = false;
-        state.response = action.payload;
-      })
-      .addCase(callApi.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
-  },
+// Create the API slice
+export const apiSlice = createApi({
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "http://localhost:3000",
+    prepareHeaders: (headers, { getState }) => {
+      // Get token from Redux state
+      const token = getState().user?.token || localStorage.getItem("token");
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+      headers.set("content-type", "application/json");
+      return headers;
+    },
+  }),
+  tagTypes: ["User", "Auth"],
+  endpoints: (builder) => ({
+    // Auth endpoints
+    loginUser: builder.mutation({
+      query: (credentials) => ({
+        url: "/auth/login",
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+    
+    registerUser: builder.mutation({
+      query: (userData) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: userData,
+      }),
+      invalidatesTags: ["Auth"],
+    }),
+    
+    loginWithGoogle: builder.query({
+      query: () => "/auth/google",
+      providesTags: ["Auth"],
+    }),
+    
+    // User endpoints
+    getUserProfile: builder.query({
+      query: () => "/user/profile",
+      providesTags: ["User"],
+    }),
+    
+    updateUserProfile: builder.mutation({
+      query: (userData) => ({
+        url: "/user/profile",
+        method: "PUT",
+        body: userData,
+      }),
+      invalidatesTags: ["User"],
+    }),
+  }),
 });
 
-export default apiSlice.reducer;
+// Export hooks for usage in functional components
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useLoginWithGoogleQuery,
+  useGetUserProfileQuery,
+  useUpdateUserProfileMutation,
+} = apiSlice;
