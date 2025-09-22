@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { USER_DELETED } from '../../../common/messaging/kafka/topics';
 import userService from '../service/user-service';
 import { validationResult } from 'express-validator';
-import { publishEvent } from '../../../common/messaging/kafka/producer';
+//import { publishEvent } from '../../../common/messaging/kafka/producer';
 
 
 const deleteUserByID = async (req: Request, res: Response) => {
@@ -21,7 +21,7 @@ const deleteUserByID = async (req: Request, res: Response) => {
             });
         }
 
-        await publishEvent(USER_DELETED, { userId });
+       // await publishEvent(USER_DELETED, { userId });
 
         return res.status(200).json({
             message: 'User deleted successfully',
