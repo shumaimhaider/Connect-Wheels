@@ -1,7 +1,7 @@
-import { Box, Button, Divider, Paper, Typography } from "@mui/material";
-import { SignupForm } from "../forms/sign-up-form";
+import { Box, Divider, Paper, Typography } from "@mui/material";
+import { SignupForm } from "../../forms/sign-up-form";
 import { Link } from "react-router-dom";
-import GoogleAuthButton from "../components/google-auth-button";
+import GoogleAuthButton from "../../components/google-auth-button";
 export default function SignupPage() {
   return (
     <Box

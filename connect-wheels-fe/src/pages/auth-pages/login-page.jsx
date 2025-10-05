@@ -1,15 +1,12 @@
 import {
   Box,
-  Button,
   Divider,
   Paper,
   Typography,
-  CircularProgress,
 } from "@mui/material";
-import { Google } from "@mui/icons-material";
-import { LoginForm } from "../forms/login-form/index";
+import { LoginForm } from "../../forms/login-form/index";
 import { Link } from "react-router-dom";
-import GoogleAuthButton from "../components/google-auth-button";
+import GoogleAuthButton from "../../components/google-auth-button";
 export default function LoginPage() {
   return (
     <Box

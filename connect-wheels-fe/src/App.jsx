@@ -6,14 +6,14 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import ProtectedRoute from "./routes/protected-route";
 import PublicRoute from "./routes/public-route";
 import Layout from "./components/layout";
-import LoginPage from "./auth-pages/login-page";
-import SignupPage from "./auth-pages/sign-up-page";
+import LoginPage from "./pages/auth-pages/login-page";
+import SignupPage from "./pages/auth-pages/sign-up-page";
 import NotFoundPage from "./pages/not-found";
 import DashboardPage from "./pages/dashboard";
-import { ToastContainer } from "react-toastify";
 
 // 🔹 Route configuration
 const router = createBrowserRouter([
