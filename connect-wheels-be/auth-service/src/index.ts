@@ -11,7 +11,10 @@ const app = express();
 
 // ✅ CORS should be first
 app.use(cors({
-  origin: "http://localhost:5173", // 👈 remove the trailing slash!
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:5174"
+  ], // 👈 remove the trailing slash!
   credentials: true,
 }));
 

@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, On
 import { Car } from './car';
 import { UserGarageFollow } from './user-garage-follow';
 
-@Entity('garages')
+@Entity({ name: "garages", schema: "garage" })
 export class Garage {
   @PrimaryGeneratedColumn()
   id!: number;

@@ -3,16 +3,18 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 export const AppDataSource = new DataSource({
-  type: "postgres", 
+  type: "postgres",
   host: "localhost",
   port: 5432,
   username: process.env.DB_USERNAME || "postgres",
   password: process.env.DB_PASSWORD || "postgres",
   database: process.env.DB_DATABASE || "postgres",
-  synchronize: true,    // make false for production
+  synchronize: false,
   logging: false,
   entities: ["src/entity/**/*.ts"],
   migrations: ["src/migration/**/*.ts"],
+  schema: "garage",
+  migrationsTableName: "garage-migrations",
   subscribers: ["src/subscriber/**/*.ts"],
 });
 

@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, ManyToOne, JoinColumn, CreateDateColumn } from 'typeorm';
 import { Garage } from './garage';
 
-@Entity('user_garage_follows')
+@Entity({ name: "user_garage_follows", schema: "garage" })
 export class UserGarageFollow {
   @PrimaryColumn()
   userId!: number;
