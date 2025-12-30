@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/slices/userSlice";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import NotificationBell from "./NotificationBell";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -24,12 +25,11 @@ export default function Navbar() {
   return (
     <AppBar
       position="static"
-      elevation={2} // ← Increased elevation for subtle shadow
+      elevation={0}
       sx={{
         backgroundColor: "white",
-        borderBottom: 1,
-        borderColor: "grey.200",
-        background: "linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)", // ← Subtle gradient
+        borderBottom: "1px solid",
+        borderColor: "rgba(0, 0, 0, 0.05)",
       }}
     >
       <Container maxWidth="xl">
@@ -58,6 +58,7 @@ export default function Navbar() {
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             {isAuthenticated ? (
               <>
+                <NotificationBell />
                 <Typography
                   variant="body2"
                   sx={{ color: "text.primary", fontWeight: 500 }}
@@ -65,13 +66,20 @@ export default function Navbar() {
                   Welcome, {user?.firstName || user?.email}
                 </Typography>
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   size="small"
                   onClick={handleLogout}
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: "20px",
                     textTransform: "none",
-                    fontWeight: 500,
+                    fontWeight: 600,
+                    bgcolor: "grey.900",
+                    color: "white",
+                    px: 3,
+                    "&:hover": {
+                      bgcolor: "black",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                    },
                   }}
                 >
                   Logout
