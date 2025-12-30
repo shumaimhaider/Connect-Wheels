@@ -63,7 +63,7 @@ export const loginUser = async (userDto: LoginUserDTO) => {
 
 // Generate JWT token (reusable for both regular and Google auth)
 const generateJWT = (user: User) => {
-    return jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1h' });
+    return jwt.sign({ userId: user.id}, JWT_SECRET, { expiresIn: '1h' });
 };
 
 const authService = {
